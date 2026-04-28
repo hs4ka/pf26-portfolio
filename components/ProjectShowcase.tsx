@@ -10,7 +10,9 @@ export default function ProjectShowcase() {
   const activeProject = projects.find((p) => p.id === activeId) ?? projects[0]
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+    <section>
+      <h2 className="text-xl font-semibold text-black mb-8">Selected works</h2>
+      <div className="flex flex-col md:flex-row gap-6 md:gap-10">
       {/* Sidebar – project list */}
       <nav className="w-full md:w-[220px] shrink-0">
         <ul className="flex flex-row md:flex-col overflow-x-auto md:overflow-visible gap-0">
@@ -35,6 +37,7 @@ export default function ProjectShowcase() {
       <div className="flex-1 min-w-0">
         <ProjectPreview project={activeProject} />
       </div>
-    </div>
+      </div>
+    </section>
   )
 }
