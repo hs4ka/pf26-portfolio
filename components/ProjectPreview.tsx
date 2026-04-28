@@ -348,7 +348,6 @@ function RivePreviewSimple({
     artboard: artboard ?? undefined,
     stateMachines: riveMachine ?? undefined,
     autoplay: true,
-    key: `rive-${restartKey}`,
   })
 
   const discoveredInputs = useDiscoverInputs(rive, riveMachine)
