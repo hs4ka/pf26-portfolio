@@ -99,6 +99,8 @@ function DataBindingStringControl({
   const [userEdited, setUserEdited] = useState(false)
   const lastExternalRef = useRef<string | undefined>(undefined)
   const settingRef = useRef(false)
+  const setValueRef = useRef(setValue)
+  setValueRef.current = setValue
 
   useEffect(() => {
     if (settingRef.current) {
@@ -120,11 +122,11 @@ function DataBindingStringControl({
       lastExternalRef.current = externalValue
       settingRef.current = true
       setLocalValue(externalValue)
-      if (setValue) {
-        setValue(externalValue)
+      if (setValueRef.current) {
+        setValueRef.current(externalValue)
       }
     }
-  }, [externalValue, userEdited, setValue])
+  }, [externalValue, userEdited])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const raw = e.target.value
