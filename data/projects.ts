@@ -1,0 +1,70 @@
+import { Project } from '@/types/project'
+
+export const projects: Project[] = [
+  {
+    id: 'p2',
+    title: 'Account Mix',
+    category: 'Rive',
+    mediaType: 'rive',
+    src: '/rive/account_mix.riv',
+    riveMachine: 'State Machine 1',
+    riveDataBindings: [
+      { name: 'Mix', type: 'number', label: 'Mix', defaultValue: 31 },
+      {
+        name: 'Subtext',
+        type: 'string',
+        label: 'Subtext',
+        defaultValue: 'Diverse and extensive credit experience. Keep accounts in good standing and avoid overextending.',
+        linkedTo: 'Mix',
+        conditionalDefaults: [
+          { min: 0, max: 10, value: 'Limited mix may restrict your score. Gradually introduce varied account types like credit cards or instalment loans.' },
+          { min: 11, max: 20, value: 'A balanced mix is forming. Consider responsibly adding different account types over time.' },
+          { min: 21, max: Infinity, value: 'Diverse and extensive credit experience. Keep accounts in good standing and avoid overextending.' },
+        ],
+      },
+    ],
+  },
+  { id: 'p3', title: 'Coin Onboarding', category: 'Rive', mediaType: 'rive', src: '/rive/coin_onboarding.riv', riveArtboard: 'iPhone 14 & 15 Pro - 1', riveMachine: 'State Machine 1', riveShowRestart: true },
+  {
+    id: 'p4',
+    title: 'Credit Age',
+    category: 'Rive',
+    mediaType: 'rive',
+    src: '/rive/credit_age.riv',
+    riveMachine: 'State Machine 1',
+    riveDataBindings: [
+      { name: 'Input Months', type: 'number', label: 'Input Months', defaultValue: 69 },
+      {
+        name: 'Subtext',
+        type: 'string',
+        label: 'Subtext',
+        defaultValue: 'Your credit history is still maturing. Avoid opening too many new accounts and allow your history to age.',
+        linkedTo: 'Input Months',
+        conditionalDefaults: [
+          { min: 0, max: 59, value: 'Limited credit history can restrict your score. Focus on keeping accounts open long-term.' },
+          { min: 60, max: 83, value: 'Your credit history is still maturing. Avoid opening too many new accounts and allow your history to age.' },
+          { min: 84, max: 107, value: 'You\'re on track. Keep accounts open and in good standing to transition into excellent credit age.' },
+          { min: 108, max: Infinity, value: 'Your long credit history strengthens your profile. Continue maintaining older accounts.' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'p5',
+    title: 'Credit Score Ticker',
+    category: 'Rive',
+    mediaType: 'rive',
+    src: '/rive/credit_score_widget_ticker_v1.riv',
+    riveMachine: 'State Machine 1',
+    riveDataBindings: [
+      { name: 'hundredValue', type: 'number', label: 'Hundreds', defaultValue: 5, hidden: true, linkedTo: 'Credit Score', digitPosition: 'hundreds' },
+      { name: 'tenValue', type: 'number', label: 'Tens', defaultValue: 9, hidden: true, linkedTo: 'Credit Score', digitPosition: 'tens' },
+      { name: 'oneValue', type: 'number', label: 'Ones', defaultValue: 4, hidden: true, linkedTo: 'Credit Score', digitPosition: 'ones' },
+      { name: 'Credit Score', type: 'number', label: 'Credit Score', defaultValue: 594 },
+      { name: 'VantageScore', type: 'boolean', label: 'VantageScore', defaultValue: true, hidden: true },
+      { name: 'TransUnion', type: 'boolean', label: 'TransUnion', defaultValue: true, hidden: true },
+      { name: 'Days', type: 'string', label: 'Days', defaultValue: '0 D' },
+    ],
+  },
+]
+
