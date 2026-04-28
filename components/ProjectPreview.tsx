@@ -34,6 +34,16 @@ function DataBindingNumberControl({
   const { value, setValue } = useViewModelInstanceNumber(path, viewModelInstance)
   const [localValue, setLocalValue] = useState(String(defaultValue ?? ''))
   const lastExternalRef = useRef<number | undefined>(undefined)
+  const hasSetDefault = useRef(false)
+
+  // Push default value into Rive on mount
+  useEffect(() => {
+    if (!hasSetDefault.current && setValue && defaultValue !== undefined) {
+      hasSetDefault.current = true
+      setValue(defaultValue)
+      onValueChange?.(path, defaultValue)
+    }
+  }, [setValue, defaultValue, path, onValueChange])
 
   useEffect(() => {
     if (value !== undefined && value !== null) {
@@ -101,6 +111,17 @@ function DataBindingStringControl({
   const settingRef = useRef(false)
   const setValueRef = useRef(setValue)
   setValueRef.current = setValue
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const hasSetDefault = useRef(false)
+
+  // Push default value into Rive on mount
+  useEffect(() => {
+    if (!hasSetDefault.current && setValue && defaultValue !== undefined) {
+      hasSetDefault.current = true
+      settingRef.current = true
+      setValue(String(defaultValue))
+    }
+  }, [setValue, defaultValue])
 
   useEffect(() => {
     if (settingRef.current) {
@@ -112,7 +133,7 @@ function DataBindingStringControl({
     }
   }, [value, userEdited])
 
-  // Auto-update from linked conditional defaults (only if user hasn't manually edited)
+  // Auto-update from linked conditional defaults (debounced to avoid state machine overload)
   useEffect(() => {
     if (
       externalValue !== undefined &&
@@ -120,12 +141,16 @@ function DataBindingStringControl({
       externalValue !== lastExternalRef.current
     ) {
       lastExternalRef.current = externalValue
-      settingRef.current = true
       setLocalValue(externalValue)
-      if (setValueRef.current) {
-        setValueRef.current(externalValue)
-      }
+      if (timerRef.current) clearTimeout(timerRef.current)
+      timerRef.current = setTimeout(() => {
+        settingRef.current = true
+        if (setValueRef.current) {
+          setValueRef.current(externalValue)
+        }
+      }, 150)
     }
+    return () => { if (timerRef.current) clearTimeout(timerRef.current) }
   }, [externalValue, userEdited])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
